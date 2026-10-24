@@ -23,6 +23,17 @@ def main():
     if '--collect-only' not in sys.argv:
         subprocess.run(args,cwd=ROOT,check=True)
     bundle=ROOT/'dist/Zhishi'
+    # Qt uses Windows' ICU ABI. A third-party PATH may cause PyInstaller to
+    # collect an incompatible same-name ICU (for example Git's version).
+    import pefile
+    icu=bundle/'_internal/icuuc.dll'
+    if icu.exists():
+        pe=pefile.PE(str(icu), fast_load=True)
+        pe.parse_data_directories(directories=[0])
+        exports={s.name for s in pe.DIRECTORY_ENTRY_EXPORT.symbols}
+        pe.close()
+        if b'ucnv_open' not in exports:
+            icu.unlink()  # Resolve the compatible Windows system ICU instead.
     shutil.copy2(ROOT/'.env.example',bundle/'.env.example')
     for name in ('README.md','LICENSE_NOTICE.md','THIRD_PARTY_NOTICES.md'):
         shutil.copy2(ROOT.parent/name,bundle/name)
