@@ -1,0 +1,2 @@
+# Standard installation uses only the runtime dependencies.
+-r requirements-runtime.txt

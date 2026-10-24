@@ -1,0 +1,7 @@
+services:
+  kb:
+    build: .
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["./data:/data"]
+    # Optional: uncomment after creating your own .env file.
+    # env_file: [.env]

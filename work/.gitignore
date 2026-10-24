@@ -1,0 +1,17 @@
+**/.env
+**/*.env
+!**/.env.example
+**/data/
+**/backups/
+**/venv/
+**/.venv/
+**/build/
+**/dist/
+**/__pycache__/
+*.py[cod]
+*.db*
+*.sqlite*
+*.log
+*.zip
+.idea/
+.vscode/
